@@ -6,7 +6,7 @@
 /*   By: bbonaldi <bbonaldi@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:26:55 by marvin            #+#    #+#             */
-/*   Updated: 2022/03/09 20:43:33 by bbonaldi         ###   ########.fr       */
+/*   Updated: 2022/03/11 16:47:00 by bbonaldi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ char *ft_convert_base(char *nbr, char *base_from, char *base_to)
 	int num_to_len;
 	char *result;
 	int sign_len;
-	base_to_len = 0;
 
+	base_to_len = 0;
 	while (base_to[base_to_len])
 		base_to_len++;
 	number = ft_atoi_base(nbr, base_from);
@@ -105,7 +105,7 @@ char *ft_convert_base(char *nbr, char *base_from, char *base_to)
 		result[0] = '-';
 	else
 		result[0] = base_to[0];
-	result[num_to_len + sign_len + 1] = '\0';
+	result[num_to_len + sign_len] = '\0';
 	while (num_to_len)
 	{
 		result[num_to_len + sign_len - 1] = base_to[number % base_to_len];

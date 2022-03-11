@@ -12,9 +12,9 @@ export const ButtonStyled = styled.button`
     `};
   border-radius: 8px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   box-shadow: ${({ theme }) => theme.shadow.small};
-  padding: ${({ theme }) => `${theme.spacing.medium} ${theme.spacing.medium}`};
+  padding: ${({ theme }) => `${theme.spacing.small} ${theme.spacing.medium}`};
   transition: all 0.1s ease;
   &:hover {
     ${({ disabled }) => !disabled

@@ -15,9 +15,10 @@ napi_value convert_base(napi_env env, napi_callback_info info)
     argvs_base = malloc(sizeof(char) * argc + 1);
     while (index < argc)
     {
-        napi_get_value_string_utf8(env, argv[index], NULL, 0, &buffer_size);
-        argvs_base[index] = malloc(sizeof(char) * buffer_size);
+        napi_get_value_string_utf8(env, argv[index], NULL, NAPI_AUTO_LENGTH, &buffer_size);
+        argvs_base[index] = (char *)malloc(sizeof(char) * buffer_size + 1);
         napi_get_value_string_utf8(env, argv[index], argvs_base[index], buffer_size + 1, NULL);
+        argvs_base[index][buffer_size + 1] = '\0';
         index++;
     }
 

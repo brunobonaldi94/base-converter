@@ -6,7 +6,7 @@ const dark = {
     text: '#F3F5F9',
   },
   background: {
-    main: '#F3F5F9',
+    main: '#212327',
   },
 };
 

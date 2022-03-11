@@ -5,5 +5,5 @@ export const HeaderContainer = styled.header`
 
 export const Nav = styled.nav`
   ${({ theme }) => theme.container.main};
-  padding: 0 16px;
+  padding: ${({ theme }) => theme.spacing.medium} ${({ theme }) => theme.spacing.small};
 `;

@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import Button from '../Button';
 import {
   FormContainer,
+  Error,
 } from './styles';
 
-function Form({ onSubmitResult }) {
+function Form({ onSubmitResult, title }) {
   const [nbr, setNbr] = useState('');
   const [baseFrom, setBaseFrom] = useState('');
   const [baseTo, setBaseTo] = useState('');
+  const [defaultBaseOptions, setDefaultBaseOptions] = useState();
+  const [errors, setErrors] = useState(null);
+
+  useEffect(() => {
+    const getBase = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/get-base');
+        const { data } = response;
+        setDefaultBaseOptions(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getBase();
+  }, []);
 
   const calculateBase = async (e) => {
     try {
@@ -26,38 +41,71 @@ function Form({ onSubmitResult }) {
       const response = await axios.post('http://localhost:3001/', dataRequest);
       const { data } = response;
       onSubmitResult(data.result);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
   };
 
-  React.useEffect(() => {
-    console.log('nbr', nbr);
-    console.log('baseFrom', baseFrom);
-    console.log('baseTo', baseTo);
-  }, [nbr, baseFrom, baseTo]);
+  const checkInBase = (value, base) => {
+    const eachValue = value.split('');
+    return eachValue.every((each) => base.includes(each));
+  };
+
+  useEffect(() => {
+    if (!checkInBase(nbr, baseFrom)) {
+      setErrors((prevError) => ({
+        ...prevError,
+        baseFromError: {
+          ...prevError.baseFromError,
+          isInBase: 'It is not in base!',
+        },
+      }));
+    } else {
+      setErrors((prevError) => ({
+        ...prevError,
+        baseFromError: {
+          ...prevError?.baseFromError,
+          isInBase: null,
+        },
+      }));
+    }
+  }, [baseFrom]);
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   return (
     <FormContainer onSubmit={(e) => calculateBase(e)}>
-      <input
-        type="text"
-        name="nbr"
-        value={nbr}
-        onChange={(e) => setNbr(e.target.value)}
-      />
-      <input
-        type="text"
-        name="baseFrom"
-        value={baseFrom}
-        onChange={(e) => setBaseFrom(e.target.value)}
-      />
-      <input
-        type="text"
-        name="baseTo"
-        value={baseTo}
-        onChange={(e) => setBaseTo(e.target.value)}
-      />
-      <Button type="submit">Submit</Button>
+      <FormContainer.Title>
+        {title}
+      </FormContainer.Title>
+      <FormContainer.InputGroup>
+        <input
+          type="text"
+          name="nbr"
+          value={nbr}
+          onChange={(e) => setNbr(e.target.value)}
+        />
+        <select name="baseFrom" onChange={(e) => setBaseFrom(e.target.value)} value={baseFrom}>
+          <option value="">Select Base</option>
+          {defaultBaseOptions?.map((option) => (
+            <option key={option.base} value={option.value}>{option.base}</option>
+          ))}
+        </select>
+        {errors?.baseFromError?.isInBase && <Error>{errors.baseFromError.isInBase}</Error>}
+        <select name="baseTo" onChange={(e) => setBaseTo(e.target.value)} value={baseTo}>
+          <option value="">Select Base</option>
+          {defaultBaseOptions?.map((option) => (
+            <option key={option.base} value={option.value}>{option.base}</option>
+          ))}
+        </select>
+      </FormContainer.InputGroup>
+      <FormContainer.Button
+        type="submit"
+      >
+        Convert
+      </FormContainer.Button>
     </FormContainer>
   );
 }
@@ -66,4 +114,5 @@ export default Form;
 
 Form.propTypes = {
   onSubmitResult: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
 };

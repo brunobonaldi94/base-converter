@@ -3,10 +3,10 @@ import commonStyles from './common';
 const light = {
   ...commonStyles,
   colors: {
-    text: '#F3F5F9',
+    text: '#212327',
   },
   background: {
-    main: '#212327',
+    main: '#F3F5F9',
   },
 };
 

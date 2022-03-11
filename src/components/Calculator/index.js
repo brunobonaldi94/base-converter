@@ -13,6 +13,7 @@ function Calculator() {
     <Container>
       <Form
         onSubmitResult={onCalculateHandler}
+        title="Base Converter"
       />
       <div>{result}</div>
     </Container>

@@ -148,7 +148,7 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
           onChange={(e) => setBaseFrom(e.target.value)}
           value={baseFrom}
           selectList={defaultBaseOptions}
-          defaultOption="Choose your base"
+          defaultOption="Choose your base - From"
         />
         )}
         {errors?.baseFromError?.isInBase && <Error>{errors.baseFromError.isInBase}</Error>}
@@ -158,7 +158,7 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
           onChange={(e) => setBaseTo(e.target.value)}
           value={baseTo}
           selectList={defaultBaseOptions}
-          defaultOption="Choose your base"
+          defaultOption="Choose your base - To"
         />
         )}
       </FormContainer.InputGroup>

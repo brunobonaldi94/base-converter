@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Button from '../Button';
+import helpers from '../../styles/helpers';
 
 export const FormContainer = styled.form`
     display: flex;
@@ -14,25 +15,6 @@ export const FormContainer = styled.form`
         margin-top: ${({ theme }) => theme.spacing.small};
     }
 
-    input, select{
-        font-size: ${({ theme }) => theme.typography.body.b1.fontSize};
-        width: 100%;
-        border-radius: 4px;
-        background-color: ${({ theme }) => theme.defaultColors.white.light};
-        outline: none;
-        border: 1px solid transparent;
-        padding: ${({ theme }) => theme.spacing.small};
-        box-shadow: ${({ theme }) => theme.shadow.medium};
-        transition: all 0.3s ease;
-        &:focus{
-            border-color: ${({ theme }) => theme.defaultColors.primary.normal};
-        }
-    }
-    input{
-        background: transparent;
-        font-size: ${({ theme }) => theme.typography.head.h3.fontSize};
-        text-align: center;
-    }
     button{
         margin-top: ${({ theme }) => theme.spacing.medium};
     }
@@ -40,7 +22,8 @@ export const FormContainer = styled.form`
 
 FormContainer.Title = styled.h2`
     margin-bottom: ${({ theme }) => theme.spacing.large};
-
+    padding: ${({ theme }) => theme.spacing.small} 0;
+    border-bottom: 1px solid ${({ theme }) => helpers.hexToRgb(theme.defaultColors.black.normal, 0.1)};
 
 `;
 

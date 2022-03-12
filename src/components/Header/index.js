@@ -14,7 +14,7 @@ function Header() {
   ];
   const links = navigation.map((nav) => (
     <li key={nav.name}>
-      <a href={nav.link}>{nav.name}</a>
+      <a href={nav.link} target="_blank" rel="noreferrer">{nav.name}</a>
     </li>
   ));
 

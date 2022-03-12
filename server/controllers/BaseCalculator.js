@@ -4,10 +4,10 @@ const calculateBase = require('../../addon');
 class BaseCalculator {
   static get getDefaultBaseOptions() {
     return ([
-      { value: '01', base: 'Binary' },
-      { value: '01234567', base: 'Octal' },
-      { value: '0123456789', base: 'Decimal' },
-      { value: '0123456789ABCDEF', base: 'Hexadecimal' },
+      { value: '01', name: 'Binary' },
+      { value: '01234567', name: 'Octal' },
+      { value: '0123456789', name: 'Decimal' },
+      { value: '0123456789ABCDEF', name: 'Hexadecimal' },
     ]);
   }
   index(req, res) {

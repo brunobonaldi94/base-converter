@@ -33,8 +33,7 @@ export const ButtonStyled = styled.button`
       `};
   }
   &:disabled {
-    background: ${({ theme }) => theme.defaultColors.gray['gray-1']};
-    opacity: 0.8;
+    background: ${({ theme }) => theme.defaultColors.gray.gray1};
     cursor: not-allowed;
   }
 `;

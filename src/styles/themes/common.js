@@ -124,7 +124,7 @@ const common = {
   },
   container: {
     main: 'max-width:1440px;margin:0 auto',
-    mainPadding: '24px 96px',
+    mainPadding: '36px 96px',
   },
   grid: {
     item1: 'flex: 1 1 360px',
@@ -147,7 +147,7 @@ const common = {
     hover: 'box-shadow: 0px 9px 43px rgba(19, 84, 240, 0.13), 0px 2.95995px 12.9632px rgba(19, 84, 240, 0.0847066), 0px 1.32758px 5.38427px rgba(19, 84, 240, 0.065), 0px 0.520648px 1.94738px rgba(19, 84, 240, 0.0452935);',
   },
   shadow: {
-    smal: '0 .125rem .25rem rgba(0,0,0,.075)',
+    small: '0 .125rem .25rem rgba(0,0,0,.075)',
     medium: '0 .25rem .50rem rgba(0,0,0,.1)',
     large: '0 0 1rem rgb(0 0 0 / 30%)',
     dropShadow: '2px 4px 6px #151616',

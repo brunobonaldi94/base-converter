@@ -6,13 +6,18 @@ import {
   Error,
 } from './styles';
 
-function Form({ onSubmitResult, title }) {
+function Form({ onSubmitResult, onSetBaseName, title }) {
   const [nbr, setNbr] = useState('');
   const [baseFrom, setBaseFrom] = useState('');
   const [baseTo, setBaseTo] = useState('');
   const [defaultBaseOptions, setDefaultBaseOptions] = useState();
-  const [errors, setErrors] = useState(null);
-
+  const [formIsValid, setFormIsValid] = useState();
+  const [errors, setErrors] = useState({});
+  const keysInputs = {
+    nbr: 'nbr',
+    baseFrom: 'baseFrom',
+    baseTo: 'baseTo',
+  };
   useEffect(() => {
     const getBase = async () => {
       try {
@@ -40,6 +45,9 @@ function Form({ onSubmitResult, title }) {
       };
       const response = await axios.post('http://localhost:3001/', dataRequest);
       const { data } = response;
+      const defaultBaseOptionsNameChoosen = defaultBaseOptions
+        .find((base) => base.value === baseTo).base;
+      onSetBaseName(defaultBaseOptionsNameChoosen);
       onSubmitResult(data.result);
     } catch (err) {
       console.log(err);
@@ -51,16 +59,16 @@ function Form({ onSubmitResult, title }) {
     return eachValue.every((each) => base.includes(each));
   };
 
-  useEffect(() => {
+  const checkBaseIsValid = () => {
     if (!checkInBase(nbr, baseFrom)) {
       setErrors((prevError) => ({
         ...prevError,
         baseFromError: {
-          ...prevError.baseFromError,
+          ...prevError?.baseFromError,
           isInBase: 'It is not in base!',
         },
       }));
-    } else {
+    } else if (nbr && baseFrom) {
       setErrors((prevError) => ({
         ...prevError,
         baseFromError: {
@@ -69,11 +77,41 @@ function Form({ onSubmitResult, title }) {
         },
       }));
     }
-  }, [baseFrom]);
+  };
+
+  useEffect(() => {
+    checkBaseIsValid();
+  }, [baseFrom, nbr]);
 
   useEffect(() => {
     console.log(errors);
   }, [errors]);
+
+  useEffect(() => {
+    const hasAnyErrorKey = Object.keys(errors)
+      .filter((errorsKey) => Object.keys(keysInputs).includes(errorsKey?.replace('Error', '')));
+    let hasAnyError = false;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const keyError of hasAnyErrorKey) {
+      if (errors[keyError].isInBase) {
+        hasAnyError = true;
+      }
+    }
+    console.log(hasAnyError);
+    if (hasAnyError) {
+      setFormIsValid(false);
+    } else {
+      setFormIsValid(true);
+    }
+  }, [errors, nbr, baseFrom, baseTo]);
+  // const isDisabledButton = () => {
+  //   if()
+  // }
+
+  // useEffect(() => {
+
+  // },[baseFrom, baseTo, nbr]);
 
   return (
     <FormContainer onSubmit={(e) => calculateBase(e)}>
@@ -83,18 +121,26 @@ function Form({ onSubmitResult, title }) {
       <FormContainer.InputGroup>
         <input
           type="text"
-          name="nbr"
+          name={keysInputs.nbr}
           value={nbr}
           onChange={(e) => setNbr(e.target.value)}
         />
-        <select name="baseFrom" onChange={(e) => setBaseFrom(e.target.value)} value={baseFrom}>
+        <select
+          name={keysInputs.baseFrom}
+          onChange={(e) => setBaseFrom(e.target.value)}
+          value={baseFrom}
+        >
           <option value="">Select Base</option>
           {defaultBaseOptions?.map((option) => (
             <option key={option.base} value={option.value}>{option.base}</option>
           ))}
         </select>
         {errors?.baseFromError?.isInBase && <Error>{errors.baseFromError.isInBase}</Error>}
-        <select name="baseTo" onChange={(e) => setBaseTo(e.target.value)} value={baseTo}>
+        <select
+          name={keysInputs.baseTo}
+          onChange={(e) => setBaseTo(e.target.value)}
+          value={baseTo}
+        >
           <option value="">Select Base</option>
           {defaultBaseOptions?.map((option) => (
             <option key={option.base} value={option.value}>{option.base}</option>
@@ -103,6 +149,8 @@ function Form({ onSubmitResult, title }) {
       </FormContainer.InputGroup>
       <FormContainer.Button
         type="submit"
+        // disabled={!nbr || !baseFrom || !baseTo}
+        disabled={!formIsValid}
       >
         Convert
       </FormContainer.Button>
@@ -114,5 +162,6 @@ export default Form;
 
 Form.propTypes = {
   onSubmitResult: PropTypes.func.isRequired,
+  onSetBaseName: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
 };

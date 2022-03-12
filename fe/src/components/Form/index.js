@@ -32,7 +32,7 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
   useEffect(() => {
     const getBase = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/get-base');
+        const response = await axios.get('/get-base');
         const { data } = response;
         setDefaultBaseOptions(data);
       } catch (err) {
@@ -54,7 +54,7 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
         baseFrom,
         baseTo,
       };
-      const response = await axios.post('http://localhost:3001/', dataRequest);
+      const response = await axios.post('/', dataRequest);
       const { data } = response;
       const defaultBaseOptionsNameChoosen = defaultBaseOptions
         .find((base) => base.value === baseTo).name;

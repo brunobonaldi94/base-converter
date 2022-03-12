@@ -1,8 +1,8 @@
 const express = require('express');
+const path = require('path');
 require('express-async-errors');
-const routes = require('./routes');
 const cors = require('cors');
-
+const routes = require('./routes');
 
 const PORT = process.env.PORT || 3001;
 
@@ -13,6 +13,7 @@ app.use(cors({
   origin: '*',
 }));
 
+app.use(express.static(path.join(__dirname, '../fe/build')));
 app.use(routes);
 
 app.use((error, request, response, next) => {

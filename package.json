@@ -13,7 +13,8 @@
   },
   "scripts": {
     "start": "node server/index.js",
-    "build": "npm run build --prefix fe",
+    "dev": "node server/index.js & npm run start --prefix fe",
+    "build": "cd fe/ && npm install && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

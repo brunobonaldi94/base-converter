@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import helpers from '../../styles/helpers';
+import GitHubCorner from '../GitHubCorner';
 
 export const HeaderContainer = styled.header`
   background-color: ${({ theme }) => theme.defaultColors.white.dark};
@@ -13,6 +14,11 @@ export const NavContainer = styled.div`
   flex-direction:column;
   align-items: center;
   width: 100%;
+  h1{
+    width: 100%;
+    text-align: center;
+    margin-top: ${({ theme }) => theme.spacing.medium};
+  }
 `;
 export const Nav = styled.nav`
   ${({ theme }) => theme.container.main};
@@ -22,10 +28,7 @@ export const Nav = styled.nav`
   align-items: center;
   justify-content: center;
 
-  h1{
-    width: 100%;
-    text-align: center;
-  }
+
 `;
 
 export const NavOptions = styled.ul`
@@ -68,3 +71,10 @@ export const NavOptions = styled.ul`
     }
   }
 `;
+
+export const GitHubCornerDesktop = styled(GitHubCorner)`
+
+  ${helpers.responsive.s`
+    display:none;
+  `};
+`

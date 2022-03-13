@@ -125,6 +125,7 @@ const common = {
   container: {
     main: 'max-width:1440px;margin:0 auto',
     mainPadding: '36px 96px',
+    mainPaddingMobile: '16px 32px',
   },
   grid: {
     item1: 'flex: 1 1 360px',

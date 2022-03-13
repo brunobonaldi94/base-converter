@@ -1,10 +1,11 @@
 import React from 'react';
-import GitHubCorner from '../GitHubCorner';
+
 import {
   HeaderContainer,
   Nav,
   NavOptions,
   NavContainer,
+  GitHubCornerDesktop,
 } from './styles';
 
 function Header() {
@@ -28,7 +29,7 @@ function Header() {
           </NavOptions>
         </Nav>
       </NavContainer>
-      <GitHubCorner
+      <GitHubCornerDesktop
         projectUrl="https://github.com/brunobonaldi94"
       />
     </HeaderContainer>

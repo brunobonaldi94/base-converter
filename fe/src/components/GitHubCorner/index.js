@@ -7,9 +7,9 @@ import {
   SVGWrapper,
 } from './styles';
 
-function GitHubCorner({ projectUrl }) {
+function GitHubCorner({ className,projectUrl }) {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <a href={projectUrl} target="_blank" rel="noreferrer" title="brunobonaldi94's Github">
         <SVGWrapper className="githubCorner" viewBox="0 0 250 250" aria-hidden="true">
           <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z" />

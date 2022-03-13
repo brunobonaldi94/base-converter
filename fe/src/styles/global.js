@@ -15,9 +15,16 @@ html{
 body{
     font-family: ${({ theme }) => theme.typography.primaryFont.fontFamily};
     width:100%;
-    
+    min-height:100vh;
     background-color: ${({ theme }) => theme.background.main};
     color: ${({ theme }) => theme.colors.text};
+}
+#root{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
 }
 h1{
     font-family: ${({ theme }) => theme.typography.primaryFont.fontFamily};

@@ -18,13 +18,18 @@ export const FormContainer = styled.form`
     button{
         margin-top: ${({ theme }) => theme.spacing.medium};
     }
+    input {
+        ${helpers.responsive.s`
+        font-size: 28px;
+    `};
+    }
 `;
 
 FormContainer.Title = styled.h2`
     margin-bottom: ${({ theme }) => theme.spacing.large};
     padding: ${({ theme }) => theme.spacing.small} 0;
     border-bottom: 1px solid ${({ theme }) => helpers.hexToRgb(theme.defaultColors.black.normal, 0.1)};
-
+    text-align: center;
 `;
 
 FormContainer.InputGroup = styled.div`

@@ -92,9 +92,9 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
     checkBaseIsValid();
   }, [baseFrom, nbr]);
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
+  // useEffect(() => {
+  //   console.log(errors);
+  // }, [errors]);
 
   const isValidHandler = () => {
     const hasAnyErrorKey = Object.keys(errors)
@@ -111,7 +111,7 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
       }
     });
 
-    console.log(hasAnyError);
+    // console.log(hasAnyError);
     if (hasAnyError) {
       setFormIsValid(false);
     } else {
@@ -164,7 +164,6 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
       </FormContainer.InputGroup>
       <FormContainer.Button
         type="submit"
-        // disabled={!nbr || !baseFrom || !baseTo}
         disabled={!formIsValid || !isTouch}
       >
         Convert

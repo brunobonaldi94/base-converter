@@ -16,6 +16,7 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
   const [formIsValid, setFormIsValid] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isCustomBase, setIsCustomBase] = useState([]);
 
   const keysInputs = {
     nbr: 'nbr',
@@ -27,6 +28,10 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
       name: 'isInBase',
       message: 'This number is not included in the base!',
     },
+    repeatedMembers:{
+      name: 'repeatedMembers',
+      message: 'It cannot contain repeated members!',
+    }
   };
 
   useEffect(() => {
@@ -57,8 +62,12 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
       const response = await axios.post('/', dataRequest);
       const { data } = response;
       const defaultBaseOptionsNameChoosen = defaultBaseOptions
-        .find((base) => base.value === baseTo).name;
-      onSetBaseName(defaultBaseOptionsNameChoosen);
+        .find((base) => base.value === baseTo)?.name;
+      if(defaultBaseOptionsNameChoosen) {
+        onSetBaseName(defaultBaseOptionsNameChoosen);
+      } else {
+        onSetBaseName(baseTo);
+      }
       onSubmitResult(data.result);
     } catch (err) {
       console.log(err);
@@ -74,7 +83,7 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
     setErrors((prevError) => ({
       ...prevError,
       [key]: {
-        ...prevError?.[errorType.name],
+        ...prevError?.[key],
         [errorType.name]: isNotNull ? errorType.message : null,
       },
     }));
@@ -88,13 +97,36 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
     }
   };
 
+  const hasUniqueMembers = (baseValue) => {
+    if(baseValue){
+      const baseToArray = baseValue.split("");
+      const uniqueArray = [...new Set(baseToArray)];
+      return baseToArray?.length === uniqueArray?.length;
+    }
+    return true;
+  }
+
+  const checkRepeatedMembers = () => {
+    if(!hasUniqueMembers(baseFrom)){
+      setErrorHandler("baseFromError",errorTypes.repeatedMembers);
+    } else {
+      setErrorHandler("baseFromError",errorTypes.repeatedMembers, false);
+    }
+    if(!hasUniqueMembers(baseTo)){
+      setErrorHandler("baseToError",errorTypes.repeatedMembers);
+    } else {
+      setErrorHandler("baseToError",errorTypes.repeatedMembers, false);
+    }  
+  }
+
   useEffect(() => {
     checkBaseIsValid();
-  }, [baseFrom, nbr]);
+    checkRepeatedMembers();
+  }, [baseFrom, nbr, baseTo]);
 
-  // useEffect(() => {
-  //   console.log(errors);
-  // }, [errors]);
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   const isValidHandler = () => {
     const hasAnyErrorKey = Object.keys(errors)
@@ -110,13 +142,7 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
         hasAnyError = true;
       }
     });
-
-    // console.log(hasAnyError);
-    if (hasAnyError) {
-      setFormIsValid(false);
-    } else {
-      setFormIsValid(true);
-    }
+      setFormIsValid(!hasAnyError);
   };
 
   const isTouchHandler = () => {
@@ -128,6 +154,56 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
     isValidHandler();
     isTouchHandler();
   }, [errors, nbr, baseFrom, baseTo]);
+
+  const setCustomBaseInputHandler = (key, value) => {
+    const isCustomBaseName = isCustomBase.find((base) => base.name === key);
+    const setBase = key === keysInputs.baseFrom ? setBaseFrom : setBaseTo;
+    if (!isCustomBaseName){
+      setIsCustomBase((prevState) => ([
+        ...prevState, {
+          name: key,
+          value,
+        },
+      ]));
+      setBase('');
+    } else {
+      setIsCustomBase((prevState) => prevState.filter((base) => base.name !== key));
+    }
+  }
+ 
+  useEffect(() => {
+    console.log(isCustomBase);
+  }, [isCustomBase]);
+
+  const renderCustomSelectOrInput = (baseName) => {
+    let content = null;
+
+    const setBase = baseName === keysInputs.baseFrom ? setBaseFrom : setBaseTo;
+    const baseNameValue = baseName === keysInputs.baseFrom ? baseFrom : baseTo;
+    const toFrom = baseName === keysInputs.baseFrom ? 'From' : 'To';
+    const baseNameSelected = isCustomBase?.find(base=> base.name === baseName);
+    if (baseNameSelected) {
+      content = (
+        <Input 
+            type="text" 
+            name={baseName} 
+            value={baseNameValue} 
+            onChange={(e) => setBase(e.target.value)} 
+            placeholder={`Enter your custom base - ${toFrom}`} />
+      );
+    } else {
+        content = (
+          <Select
+            name={baseName}
+            onChange={(e) => setBase(e.target.value)}
+            value={baseNameValue}
+            selectList={defaultBaseOptions}
+            defaultOption={`Choose your base - ${toFrom}`}
+          />
+        );
+      }
+      return content;
+    }
 
   return (
     <FormContainer onSubmit={(e) => calculateBase(e)}>
@@ -143,23 +219,32 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
           placeholder="Enter your number"
         />
         {defaultBaseOptions && (
-        <Select
-          name={keysInputs.baseFrom}
-          onChange={(e) => setBaseFrom(e.target.value)}
-          value={baseFrom}
-          selectList={defaultBaseOptions}
-          defaultOption="Choose your base - From"
-        />
+        <FormContainer.SelectInput>
+        {renderCustomSelectOrInput(keysInputs.baseFrom)}
+        <label>
+          <p>Do you want to input a custom base?</p>
+          <Input
+            type="checkbox"
+            onChange={(e) => setCustomBaseInputHandler(keysInputs.baseFrom, e.target.checked)}
+            />
+        </label>
+        </FormContainer.SelectInput>
+    
         )}
         {errors?.baseFromError?.isInBase && <Error>{errors.baseFromError.isInBase}</Error>}
+        {errors?.baseFromError?.repeatedMembers && <Error>{errors.baseFromError.repeatedMembers}</Error>}
         {defaultBaseOptions && (
-        <Select
-          name={keysInputs.baseTo}
-          onChange={(e) => setBaseTo(e.target.value)}
-          value={baseTo}
-          selectList={defaultBaseOptions}
-          defaultOption="Choose your base - To"
-        />
+        <FormContainer.SelectInput>
+        {renderCustomSelectOrInput(keysInputs.baseTo)}
+        <label>
+          <p>Do you want to input a custom base?</p>
+          <Input
+            type="checkbox"
+            onChange={(e) => setCustomBaseInputHandler(keysInputs.baseTo, e.target.checked)}
+            />
+        </label>
+        {errors?.baseToError?.repeatedMembers && <Error>{errors.baseToError.repeatedMembers}</Error>}
+        </FormContainer.SelectInput>
         )}
       </FormContainer.InputGroup>
       <FormContainer.Button

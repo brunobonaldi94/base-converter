@@ -11,22 +11,18 @@ export const FormContainer = styled.form`
     box-shadow:  ${({ theme }) => theme.shadow.medium};
     padding: ${({ theme }) => theme.spacing.large};
 
-    input + select, select + select {
-        margin-top: ${({ theme }) => theme.spacing.small};
-    }
-
     button{
         margin-top: ${({ theme }) => theme.spacing.medium};
     }
     input {
         ${helpers.responsive.s`
-        font-size: 28px;
+        font-size: 24px;
     `};
     }
 `;
 
 FormContainer.Title = styled.h2`
-    margin-bottom: ${({ theme }) => theme.spacing.large};
+    margin-bottom: ${({ theme }) => theme.spacing.small};
     padding: ${({ theme }) => theme.spacing.small} 0;
     border-bottom: 1px solid ${({ theme }) => helpers.hexToRgb(theme.defaultColors.black.normal, 0.1)};
     text-align: center;
@@ -37,6 +33,39 @@ FormContainer.InputGroup = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    & > *{
+        margin-top: ${({ theme }) => theme.spacing.medium};
+    }
+    & > :first-child{
+        margin-bottom: ${({ theme }) => theme.spacing.large};
+    }
+
+`;
+
+FormContainer.SelectInput = styled.div`
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    input {
+        ${helpers.responsive.s`
+            font-size: 16px !important;
+        `};
+    }
+   label {
+    display: flex;
+    align-items: center;
+    justify-content:flex-end;
+    width: 100%;
+    margin-top: ${({ theme }) => theme.spacing.medium};
+    color: ${({ theme }) => helpers.hexToRgb(theme.defaultColors.black.light, 0.8)};
+ 
+    cursor: pointer;
+    input[type=checkbox]{
+        margin-left: ${({ theme }) => theme.spacing.small};
+        width:auto;
+    }
+   }
 `;
 
 FormContainer.Button = styled(Button)`

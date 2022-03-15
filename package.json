@@ -14,7 +14,7 @@
   "scripts": {
     "start": "node server/index.js",
     "install_local": "npm install && cd fe/ && npm install",
-    "dev": "node server/index.js & npm run start --prefix fe",
+    "dev": "npm run start --prefix fe & node server/index.js",
     "build": "cd fe/ && npm install && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

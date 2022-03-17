@@ -5,6 +5,7 @@ import Input from './Input';
 import {
   FormContainer,
   Error,
+  InputCustom,
 } from './styles';
 import Select from './Select';
 
@@ -75,7 +76,8 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
   };
 
   const checkInBase = (value, base) => {
-    const eachValue = value.split('');
+    const eachValue = value.split('')
+    .filter((letter) => (letter !== '+' && letter !== '-'));
     return eachValue.every((each) => base.includes(each));
   };
 
@@ -184,7 +186,7 @@ function Form({ onSubmitResult, onSetBaseName, title }) {
     const baseNameSelected = isCustomBase?.find(base=> base.name === baseName);
     if (baseNameSelected) {
       content = (
-        <Input 
+        <InputCustom
             type="text" 
             name={baseName} 
             value={baseNameValue} 

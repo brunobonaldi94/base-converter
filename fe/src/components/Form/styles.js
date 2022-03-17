@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Button from '../Button';
 import helpers from '../../styles/helpers';
+import Input from './Input';
 
 export const FormContainer = styled.form`
     display: flex;
@@ -76,4 +77,8 @@ export const Error = styled.p`
     padding:${({ theme }) => theme.spacing.small} 4px;
     align-self:start;
     color:${({ theme }) => theme.defaultColors.red.normal};
+`;
+
+export const InputCustom = styled(Input)`
+    font-size:24px;
 `;

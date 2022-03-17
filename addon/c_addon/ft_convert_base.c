@@ -6,7 +6,7 @@
 /*   By: bbonaldi <bbonaldi@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:26:55 by marvin            #+#    #+#             */
-/*   Updated: 2022/03/11 16:47:00 by bbonaldi         ###   ########.fr       */
+/*   Updated: 2022/03/16 21:23:23 by bbonaldi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ int get_nbr(char c, char *base)
 	return (i);
 }
 
-int ft_atoi_base(char *str, char *base)
+long int ft_atoi_base(char *str, char *base)
 {
 	int sign;
 	char *nbr_cpy;
-	int result;
+	long int result;
 	int base_len;
 
 	sign = 1;
@@ -65,10 +65,10 @@ int ft_atoi_base(char *str, char *base)
 	return (sign * result);
 }
 
-int get_number_len(char *base_to, int base_to_len, int *nbr, int *sign_len)
+int get_number_len(char *base_to, int base_to_len, long int *nbr, int *sign_len)
 {
 	int num_len;
-	int nbr_cpy;
+	long int nbr_cpy;
 
 	num_len = 0;
 	nbr_cpy = *nbr;
@@ -89,7 +89,7 @@ int get_number_len(char *base_to, int base_to_len, int *nbr, int *sign_len)
 
 char *ft_convert_base(char *nbr, char *base_from, char *base_to)
 {
-	int number;
+	long int number;
 	int base_to_len;
 	int num_to_len;
 	char *result;

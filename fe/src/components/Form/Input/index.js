@@ -3,9 +3,12 @@ import {
   InputStyled,
 } from './styles';
 
-function Input({ ...props }) {
+function Input({ className, ...props }) {
   return (
-    <InputStyled {...props} />
+    <InputStyled
+      className={className} 
+      {...props} 
+    />
   );
 }
 

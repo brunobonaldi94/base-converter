@@ -1,5 +1,10 @@
 #include "ft_convert_base.h"
 
+void print_str(char *s)
+{
+    printf("result do api:%s|%ld\n", s, strlen(s));
+}
+
 napi_value convert_base(napi_env env, napi_callback_info info)
 {
     size_t argc;
@@ -19,11 +24,12 @@ napi_value convert_base(napi_env env, napi_callback_info info)
         argvs_base[index] = (char *)malloc(sizeof(char) * buffer_size + 1);
         napi_get_value_string_utf8(env, argv[index], argvs_base[index], buffer_size + 1, NULL);
         argvs_base[index][buffer_size + 1] = '\0';
+
         index++;
     }
-
     char *result = ft_convert_base(argvs_base[0], argvs_base[1], argvs_base[2]);
     argvs_base[index] = NULL;
+    print_str(result);
     napi_create_string_utf8(env, result, NAPI_AUTO_LENGTH, &res);
     return res;
 }

@@ -6,7 +6,7 @@
 /*   By: bbonaldi <bbonaldi@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:26:55 by marvin            #+#    #+#             */
-/*   Updated: 2022/03/16 21:23:23 by bbonaldi         ###   ########.fr       */
+/*   Updated: 2022/03/19 20:17:58 by bbonaldi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ long int ft_atoi_base(char *str, char *base)
 	return (sign * result);
 }
 
-int get_number_len(char *base_to, int base_to_len, long int *nbr, int *sign_len)
+int get_number_len(int base_to_len, long int *nbr, int *sign_len)
 {
 	int num_len;
 	long int nbr_cpy;
@@ -77,6 +77,8 @@ int get_number_len(char *base_to, int base_to_len, long int *nbr, int *sign_len)
 		*nbr = *nbr * -1;
 		*sign_len = 1;
 	}
+	else if (*nbr == 0)
+		num_len = 1;
 	else
 		*sign_len = 0;
 	while (nbr_cpy)
@@ -99,7 +101,7 @@ char *ft_convert_base(char *nbr, char *base_from, char *base_to)
 	while (base_to[base_to_len])
 		base_to_len++;
 	number = ft_atoi_base(nbr, base_from);
-	num_to_len = get_number_len(base_to, base_to_len, &number, &sign_len);
+	num_to_len = get_number_len(base_to_len, &number, &sign_len);
 	result = malloc(sizeof(char) * (num_to_len + sign_len + 1));
 	if (sign_len > 0)
 		result[0] = '-';
@@ -112,5 +114,6 @@ char *ft_convert_base(char *nbr, char *base_from, char *base_to)
 		number /= base_to_len;
 		num_to_len--;
 	}
+	printf("result do c:%s|%ld\n", result, strlen(result));
 	return (result);
 }
